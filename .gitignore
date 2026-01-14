@@ -27,6 +27,7 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
@@ -43,3 +44,24 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android build artifacts
+android/.gradle/
+android/local.properties
+
+# iOS build artifacts
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/Podfile.lock
+
+# macOS build artifacts
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/Podfile.lock
+
+# Windows/Linux build artifacts
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+
+# VS Code workspace settings
+.vscode/

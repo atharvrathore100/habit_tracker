@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/habit.dart';
+import '../data/habit_database.dart';
 
 class HabitProvider with ChangeNotifier {
   List<Habit> _habits = [];
+  final HabitDatabase _database = HabitDatabase.instance;
 
   List<Habit> get habits => _habits;
 
@@ -14,7 +14,7 @@ class HabitProvider with ChangeNotifier {
 
   void addHabit(Habit habit) {
     _habits.insert(0, habit);
-    saveHabits();
+    _database.upsertHabit(habit);
     notifyListeners();
   }
 
@@ -22,40 +22,27 @@ class HabitProvider with ChangeNotifier {
     final index = _habits.indexWhere((h) => h.id == updated.id);
     if (index != -1) {
       _habits[index] = updated;
-      saveHabits();
+      _database.upsertHabit(updated);
       notifyListeners();
     }
   }
 
   void removeHabit(String id) {
     _habits.removeWhere((habit) => habit.id == id);
-    saveHabits();
+    _database.deleteHabit(id);
     notifyListeners();
   }
 
   void toggleHabitCompletion(String id, DateTime date) {
     final habit = _habits.firstWhere((h) => h.id == id);
     habit.toggleCompletion(date);
-    saveHabits();
+    _database.upsertHabit(habit);
     notifyListeners();
   }
 
   Future<void> loadHabits() async {
-    final prefs = await SharedPreferences.getInstance();
-    final habitsJson = prefs.getString('habits');
-    if (habitsJson != null) {
-      final habitsList = json.decode(habitsJson) as List;
-      _habits = habitsList.map((h) => Habit.fromJson(h)).toList();
-      notifyListeners();
-      return;
-    }
+    await _database.init();
+    _habits = await _database.fetchHabits();
     notifyListeners();
   }
-
-  Future<void> saveHabits() async {
-    final prefs = await SharedPreferences.getInstance();
-    final habitsJson = json.encode(_habits.map((h) => h.toJson()).toList());
-    await prefs.setString('habits', habitsJson);
-  }
-
 }
