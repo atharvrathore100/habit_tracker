@@ -3,24 +3,29 @@ import '../models/habit.dart';
 import '../theme/app_theme.dart';
 
 class HabitHeatmap extends StatelessWidget {
-  static const int weeks = 12;
+  static const int defaultWeeks = 12;
 
   final Habit habit;
   final Color color;
   final int totalWeeks;
+  final int? totalDays;
+  final int? columns;
   final double dotSize;
 
   const HabitHeatmap({
     super.key,
     required this.habit,
     required this.color,
-    this.totalWeeks = weeks,
+    this.totalWeeks = defaultWeeks,
+    this.totalDays,
+    this.columns,
     this.dotSize = 10,
   });
 
   @override
   Widget build(BuildContext context) {
-    final totalCells = totalWeeks * 7;
+    final totalCells = totalDays ?? totalWeeks * 7;
+    final gridColumns = columns ?? totalWeeks;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final emptyColor = isDark ? AppColors.line : AppColors.lightCard;
     final dates = List.generate(totalCells, (index) {
@@ -33,7 +38,7 @@ class HabitHeatmap extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: totalWeeks,
+        crossAxisCount: gridColumns,
         crossAxisSpacing: 4,
         mainAxisSpacing: 4,
         childAspectRatio: 1,

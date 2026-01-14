@@ -89,7 +89,7 @@ class HabitCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Last ${HabitHeatmap.weeks * 7} days',
+                  'Last 12 days',
                   style: Theme.of(context)
                       .textTheme
                       .labelLarge
@@ -108,6 +108,8 @@ class HabitCard extends StatelessWidget {
             HabitHeatmap(
               habit: habit,
               color: habit.color,
+              totalDays: 12,
+              columns: 12,
             ),
           ],
         ),
