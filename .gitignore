@@ -12,6 +12,12 @@
 .swiftpm/
 migrate_working_dir/
 
+# Xcode user data / derived data
+**/xcuserdata/
+**/*.xcuserstate
+**/*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+DerivedData/
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -48,16 +54,20 @@ app.*.map.json
 # Android build artifacts
 android/.gradle/
 android/local.properties
+android/**/generated/
+android/**/captures/
 
 # iOS build artifacts
 ios/Flutter/ephemeral/
 ios/Pods/
 ios/Podfile.lock
+ios/Runner.xcworkspace/
 
 # macOS build artifacts
 macos/Flutter/ephemeral/
 macos/Pods/
 macos/Podfile.lock
+macos/Runner.xcworkspace/
 
 # Windows/Linux build artifacts
 windows/flutter/ephemeral/

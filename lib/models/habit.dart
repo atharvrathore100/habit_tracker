@@ -14,6 +14,18 @@ class Habit {
   List<int> reminderDays;
   TimeOfDay reminderTime;
 
+  static const List<IconData> _supportedIcons = [
+    Icons.auto_awesome_rounded,
+    Icons.local_fire_department_rounded,
+    Icons.directions_run_rounded,
+    Icons.self_improvement_rounded,
+    Icons.code_rounded,
+    Icons.savings_rounded,
+    Icons.book_rounded,
+    Icons.fastfood_rounded,
+    Icons.nights_stay_rounded,
+  ];
+
   Habit({
     required this.id,
     required this.name,
@@ -37,9 +49,19 @@ class Habit {
         reminderDays = reminderDays ?? [],
         reminderTime = reminderTime ?? const TimeOfDay(hour: 18, minute: 30);
 
-  IconData get icon => IconData(iconCode, fontFamily: iconFontFamily);
+  IconData get icon => _iconFromData(iconCode, iconFontFamily);
 
   Color get color => Color(colorValue);
+
+  static IconData _iconFromData(int codePoint, String fontFamily) {
+    for (final icon in _supportedIcons) {
+      final iconFamily = icon.fontFamily ?? 'MaterialIcons';
+      if (icon.codePoint == codePoint && iconFamily == fontFamily) {
+        return icon;
+      }
+    }
+    return Icons.auto_awesome_rounded;
+  }
 
   void toggleCompletion(DateTime date) {
     final dateOnly = DateTime(date.year, date.month, date.day);
